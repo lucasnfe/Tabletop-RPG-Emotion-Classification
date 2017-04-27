@@ -13,17 +13,14 @@ import rpg_ec
 # General classes of emotions
 NRC_EMOTIONS = ["anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust"]
 
-# Mapping NRC emotions to RPG emotions
-EMOTION_MAP = {
-    "anger"       : "agitated",
-    "fear"        : "suspense",
-    "sadness"     : "agitated",
-    # "disgust"     : "agitated",
-    "joy"         : "happy",
-    "trust"       : "calm",
-    "surprise"    : "suspense",
-    "anticipation": "suspense",
-}
+EMOTION_MAP = {'trust': 'suspense',
+                'fear': 'suspense',
+             'sadness': 'calm',
+            'surprise': 'suspense',
+                 'joy': 'calm',
+             'disgust': 'calm',
+        'anticipation': 'agitated',
+               'anger': 'agitated'}
 
 def parse_nrc_lexicon(lexicon_filepath):
     lexicon = {}
@@ -46,9 +43,7 @@ def parse_nrc_lexicon(lexicon_filepath):
     return lexicon
 
 def calculate_emotion_density(sentence, emotions, lexicon):
-    density = {}
-    for emotion in emotions:
-        density[emotion] = 0
+    density = {emotion:0 for emotion in emotions}
 
     for word in sentence.split(' '):
         if word in lexicon:
@@ -60,15 +55,15 @@ def calculate_emotion_density(sentence, emotions, lexicon):
 
     return density
 
-def density_to_rpg_emotions(density):
+def density_to_rpg_emotions(density, emotion_map):
     emotions = {}
     for emotion in rpg_ec.RPG_EMOTIONS:
         emotions[emotion] = 0
 
     total_density = 0
     for emotion in density:
-        if emotion in EMOTION_MAP:
-            mapped_emotion = EMOTION_MAP[emotion]
+        if emotion in emotion_map:
+            mapped_emotion = emotion_map[emotion]
             emotions[mapped_emotion] += density[emotion]
 
         total_density += density[emotion]
@@ -78,7 +73,7 @@ def density_to_rpg_emotions(density):
 
     return emotions
 
-def classify_narrative(narrative, lexicon, context_length = 0):
+def classify_narrative(narrative, lexicon, emotion_map, context_length = 0):
     classification = {}
 
     for s_id in narrative:
@@ -97,7 +92,7 @@ def classify_narrative(narrative, lexicon, context_length = 0):
                 # Accumulate the previous density to the current one
                 density = dict(collections.Counter(density) + collections.Counter(context_density))
 
-        rpgEmotions = density_to_rpg_emotions(density)
+        rpgEmotions = density_to_rpg_emotions(density, emotion_map)
 
         # Get the emotion with higher density
         max_emotion = max(sorted(rpgEmotions.items()), key=operator.itemgetter(1))[0]
@@ -122,7 +117,7 @@ if __name__ == "__main__":
     narrative = rpg_ec.parse_narrative_data(narrative_filepath)
 
     # Classify a narrative according to rpg_emotions:
-    classification = classify_narrative(narrative, lexicon, 20)
+    classification = classify_narrative(narrative, lexicon, EMOTION_MAP, 20)
 
     # Calculate confusion matrix
     confusion_matrix = rpg_ec.rpg_create_confusion_matrix(narrative, classification)

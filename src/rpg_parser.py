@@ -1,6 +1,7 @@
 #-----------------------------------------------------------
 # Name: rpg_ec.py
 # Create Datasets from Anotated RPG Sessions Transcripts
+# Transcripts are automatically created using YouTube subtitles
 # Author: Lucas N. Ferreira
 # E-mail: lferreira@ucsc.edu
 #-----------------------------------------------------------
