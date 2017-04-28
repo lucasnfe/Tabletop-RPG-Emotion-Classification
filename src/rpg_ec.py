@@ -39,7 +39,8 @@ def rpg_create_confusion_matrix(narrative, classification):
     predicted = [RPG_EMOTIONS.index(line[1]) for line in classification.values()]
     return create_confusion_matrix(expected, predicted, len(RPG_EMOTIONS))
 
-def rpg_print_confusion_matrix(conf_matrix):
+def rpg_print_confusion_matrix(conf_matrix, title = ""):
+    print(title)
     line = ""
 
     longest_emotion_length = len(max(RPG_EMOTIONS))

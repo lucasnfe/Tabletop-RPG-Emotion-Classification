@@ -122,7 +122,7 @@ if __name__ == "__main__":
     # Calculate confusion matrix
     confusion_matrix = rpg_ec.rpg_create_confusion_matrix(narrative, classification)
 
-    rpg_ec.rpg_print_confusion_matrix(confusion_matrix)
+    rpg_ec.rpg_print_confusion_matrix(confusion_matrix, narrative_filepath.split('/')[-1])
     print(rpg_ec.calculate_accuracy(confusion_matrix))
 
     rpg_ec.rpg_print_classification(classification, "classification.txt")

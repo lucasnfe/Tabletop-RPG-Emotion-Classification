@@ -1,6 +1,6 @@
 #-----------------------------------------------------------
 # Name: rpg_density.py
-# Calculate Emotion Word Density using NRC Emotion Lexicon
+# Calculate Find the optimal mapping between RPG and NRP emotions
 # Author: Lucas N. Ferreira
 # E-mail: lferreira@ucsc.edu
 #-----------------------------------------------------------
