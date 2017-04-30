@@ -43,10 +43,19 @@ def rpg_parse_transcripts(transcripts):
 
     return dataset
 
+def rpg_check_sentence_ids(dataset):
+    index = 1
+    fixed_dataset = {}
+    for s_id in dataset:
+        fixed_dataset[index] = (dataset[s_id][0], dataset[s_id][1])
+        index += 1
+
+    return fixed_dataset
+
 def rpg_print_dataset(dataset, output_filename):
     dataset_file = open(output_filename, 'w')
 
-    for t in dataset.keys():
+    for t in sorted(dataset.keys()):
         sentence_id = str(t)
         sentence = remove_html_tags(str(dataset[t][0]))
         sentence_emotion = str(dataset[t][1])
@@ -61,4 +70,5 @@ if __name__ == "__main__":
     transcripts.pop(0)
 
     dataset = rpg_parse_transcripts(transcripts)
+    dataset = rpg_check_sentence_ids(dataset)
     rpg_print_dataset(dataset, "dataset.txt")
